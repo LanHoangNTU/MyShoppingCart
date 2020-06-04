@@ -48,16 +48,19 @@ public class SecondFragment extends Fragment implements View.OnClickListener{
 
     private void addViews() {
         FragmentActivity activity = getActivity();
-        txtShopping = activity.findViewById(R.id.txtYourCart);
-        btnBuy = activity.findViewById(R.id.btnBuy);
-        btnRemove = activity.findViewById(R.id.btnRemove);
-        btnBuy.setOnClickListener(this);
-        btnRemove.setOnClickListener(this);
+        if(activity != null) {
+            txtShopping = activity.findViewById(R.id.txtYourCart);
+            btnBuy = activity.findViewById(R.id.btnBuy);
+            btnRemove = activity.findViewById(R.id.btnRemove);
+            btnBuy.setOnClickListener(this);
+            btnRemove.setOnClickListener(this);
+        }
         showShoppingCart();
     }
 
     private void showShoppingCart() {
         FragmentActivity activity = getActivity();
+        assert activity != null;
         ICartController controller = (ICartController) activity.getApplication();
         List<Product> products = controller.getShoppingCart();
         StringBuilder builder = new StringBuilder();
@@ -84,9 +87,12 @@ public class SecondFragment extends Fragment implements View.OnClickListener{
                     clear();
                     Toast.makeText(getActivity(), "Thank you for your purchases!", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Toast.makeText(getActivity(), "Your cart is empty", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btnRemove:
-                clear();
+                    clear();
                     Toast.makeText(getActivity(), "Cart removed!", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -94,6 +100,7 @@ public class SecondFragment extends Fragment implements View.OnClickListener{
 
     private void clear() {
         FragmentActivity activity = getActivity();
+        assert activity != null;
         ICartController controller = (ICartController) activity.getApplication();
         controller.clearShoppingCart();
         txtShopping.setText("Empty");
